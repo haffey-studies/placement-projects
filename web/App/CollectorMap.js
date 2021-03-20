@@ -47,19 +47,19 @@ var isolation_map = {
   Studies:{
     SheetEditor:{
       "SheetEditor.html" : "file"
-    },
-    TrialTypeEditor:{
-      "TrialTypeEditor.html" : "file",
-      "Graphic.html"         : "file",
     }
   },
   Surveys : {
     'Surveys.html'    : 'file',
   },
+  TrialTypes:{
+    "TrialTypes.html" : "file",
+    "Graphic.html"    : "file",
+  },
   "CollectorMap.js" : "file",
   "jsFunctions.js"  : "file",
   "Libraries.html"  : "file",
-  "RunStudy.html"   : "file"
+  "Run.html"   : "file"
 }
 
 function this_map(this_item){

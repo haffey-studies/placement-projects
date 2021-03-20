@@ -1,0 +1,123 @@
+<!--
+  Flashcard trialtype
+  Authors:
+    Harry Sullivan
+    Dr. Anthony Haffey
+    
+---development---
+[
+  {"text":"your practice text"}
+]
+---development---
+
+
+-->
+<style>
+.card_btn{
+  width:100%;
+  margin:1px;
+}
+
+.flashcard_box{
+  background-color:teal;
+  width: 400px;
+  height: 250px;
+  text-align: center;
+  line-height: 200px;
+  font-size: 25px;
+  border-radius: 15px;
+}
+
+#everything{
+  margin:auto;
+  width:620px;
+  padding:50px;
+  max-height:600px;
+  text-align: right;
+}
+</style>
+
+<body>
+
+<div id="everything">
+  <h5>Perception and Neuroscience Flashcards</h5>
+  <p class="text-right">Select a flashcard from the panel on the left and use the buttons below to flip the card or hide it.</p>
+  <p class="text-right">You will be alerted once 30 minutes have elapsed.</p>
+  <table id="card_table">
+    <tr>
+      <td id="card_list"></td>
+      <td><div class="flashcard_box" id="box_0"></div></td>
+    </tr>
+    <tr>
+      <td> </td>
+      <td>
+        <!--
+        Card Controls:  <div class="btn-group" role="group" aria-label="Basic example">
+        -->
+        <button type="button" onclick="frontFlip()" class="btn btn-primary">Front</button>
+        <button type="button" onclick="backFlip()" class="btn btn-primary">Back</button>
+
+        <!--
+        <button type="button" onclick="hideMe()"class="btn btn-primary">Hide Card</button>
+        -->
+      </div>
+    </td>
+  </table>
+</div>
+</body>
+
+<script>
+var cards_array = [
+  {
+    term: "Synaesthesia", // this is card 0
+    definition: "Definition"
+    //img:
+  },
+  {
+    term: "Term 2",
+    definition: "Definition 2"
+    //img:
+  },
+  {
+    term: "Term 3",
+    definition: "Definition 3"
+    //img:
+  }
+];
+var current_card = 0; // this acts as a placeholder for the current flashcard
+var no_of_cards = cards_array.length;
+var terms = cards_array.map(function(card, index){
+  return "<button onClick='loadCard(this.id)' class='btn btn-primary card_btn' data-bs-toggle='button' autocomplete='off' id=" + index + ">" + card.term + "</button><br>";
+});
+$("#card_list").html(terms);
+function loadCard(clicked_id) {
+  var this_card = cards_array[clicked_id]["term"];
+  $(".flashcard_box").html(this_card);
+  current_card = clicked_id;
+  }
+
+function backFlip() {
+  var this_card = cards_array[current_card]["definition"];
+  $(".flashcard_box").html(this_card);
+}
+function hideMe(){
+  $(".flashcard_box").html(" ")
+}
+function frontFlip(){
+  var this_card = cards_array[current_card]["term"];
+  $(".flashcard_box").html(this_card);
+}
+
+window.setTimeout(timesUp, 1800000); //1800000ms = 30 mins
+
+function timesUp(){
+  Trial.submit();
+  /*
+  $("#card_table").hide()
+  alert("30 minutes have now passed. Please close the page.");
+  */
+}
+
+
+
+</script>

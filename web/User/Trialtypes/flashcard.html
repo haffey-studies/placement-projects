@@ -3,6 +3,7 @@
   Authors:
     Harry Sullivan
     Dr. Anthony Haffey
+    University of Reading
     
 ---development---
 [
@@ -12,6 +13,8 @@
 
 
 -->
+
+
 <style>
 .card_btn{
   width:100%;
@@ -19,11 +22,10 @@
 }
 
 .flashcard_box{
-  background-color:teal;
+  border: 2px solid teal;
   width: 400px;
   height: 250px;
   text-align: center;
-  line-height: 200px;
   font-size: 25px;
   border-radius: 15px;
 }
@@ -38,7 +40,6 @@
 </style>
 
 <body>
-
 <div id="everything">
   <h5>Perception and Neuroscience Flashcards</h5>
   <p class="text-right">Select a flashcard from the panel on the left and use the buttons below to flip the card or hide it.</p>
@@ -51,15 +52,8 @@
     <tr>
       <td> </td>
       <td>
-        <!--
-        Card Controls:  <div class="btn-group" role="group" aria-label="Basic example">
-        -->
         <button type="button" onclick="frontFlip()" class="btn btn-primary">Front</button>
         <button type="button" onclick="backFlip()" class="btn btn-primary">Back</button>
-
-        <!--
-        <button type="button" onclick="hideMe()"class="btn btn-primary">Hide Card</button>
-        -->
       </div>
     </td>
   </table>
@@ -67,57 +61,61 @@
 </body>
 
 <script>
-var cards_array = [
-  {
-    term: "Synaesthesia", // this is card 0
-    definition: "Definition"
-    //img:
-  },
-  {
-    term: "Term 2",
-    definition: "Definition 2"
-    //img:
-  },
-  {
-    term: "Term 3",
-    definition: "Definition 3"
-    //img:
-  }
-];
+
+var flashcards_sheet = "{{flashcards_sheet}}".toLowerCase();
+
+if(typeof(parent.parent.exp_json.all_stims[flashcards_sheet]) !== "undefined"){
+  var cards_array = parent.parent.Collector.PapaParsed(
+    parent.parent.exp_json.all_stims[flashcards_sheet]
+  );
+} else {
+  
+  cards_array = [
+    {
+      answer: "Derived from the greek ‘synth’ (meaning together) and ethesia (sensation).<br>The joining of two senses, one sensory or cognitive pathway connects to another which results in involuntary experiences in another sensory or cognitive pathway↵60-100 different forms of synaesthesia have been identified (Simner, 2013)",
+      cue: "synaesthesia",
+      "font-size": "20px"
+    },
+    {
+      answer: "Ink colour is the same as the word written.<br>This test identifies if synaesthesia is automatic/pre-attentive. <br> Meier & Rothen (2009): This study was able to train non-synaesthetic individuals to behave like synaesthetes",
+      cue: "Modified stroop task",
+      "font-size": "20px"
+    }
+  ]
+}
+
 var current_card = 0; // this acts as a placeholder for the current flashcard
 var no_of_cards = cards_array.length;
-var terms = cards_array.map(function(card, index){
-  return "<button onClick='loadCard(this.id)' class='btn btn-primary card_btn' data-bs-toggle='button' autocomplete='off' id=" + index + ">" + card.term + "</button><br>";
+var cues = cards_array.map(function(card, index){
+  return "<button onClick='loadCard(this.id)' class='btn btn-primary btn-sm card_btn' data-bs-toggle='button' autocomplete='off' id=" + index + ">" + card.cue + "</button><br>";
 });
-$("#card_list").html(terms);
+
+$("#card_list").html(cues);
 function loadCard(clicked_id) {
-  var this_card = cards_array[clicked_id]["term"];
+  var this_card = cards_array[clicked_id]["cue"];
   $(".flashcard_box").html(this_card);
   current_card = clicked_id;
-  }
+}
 
 function backFlip() {
-  var this_card = cards_array[current_card]["definition"];
+  $(".flashcard_box").css(
+    "font-size",
+    cards_array[current_card]["font-size"]
+  );
+  $(".flashcard_box").css("line-height","normal");
+  var this_card = cards_array[current_card]["answer"];
   $(".flashcard_box").html(this_card);
 }
 function hideMe(){
   $(".flashcard_box").html(" ")
 }
 function frontFlip(){
-  var this_card = cards_array[current_card]["term"];
+  var this_card = cards_array[current_card]["cue"];
+  $(".flashcard_box").css("font-size","25px");
+  $(".flashcard_box").css("line-height","200px");
   $(".flashcard_box").html(this_card);
 }
 
-window.setTimeout(timesUp, 1800000); //1800000ms = 30 mins
-
-function timesUp(){
-  Trial.submit();
-  /*
-  $("#card_table").hide()
-  alert("30 minutes have now passed. Please close the page.");
-  */
-}
-
-
+window.setTimeout(Trial.submit(), 1800000); //1800000ms = 30 mins
 
 </script>

@@ -28,13 +28,12 @@ var isolation_map = {
   			"info_sheet.csv"					: 'file'
       },
       DefaultTrialtypes:{
-        "instruct.html" : "file",
+        "instruct.html" :         "file",
   			"instruct_keyboard.html": "file",
-        "survey.html"   : "file",
-  			"text.html"     : "file"
-      },
-      "default_experiment.json" : "file",
-        //stuff here
+        "survey.html":            "file",
+  			"text.html":              "file",
+        "webgazer.html":          "file"
+      }
     },
   },
   Help:{

@@ -1,3 +1,3 @@
-item,trial type,max time,text,shuffle 1,survey,
-0,instruct,user,"<iframe width=""640"" height=""360"" src=""https://web.microsoftstream.com/embed/video/64816bfc-d1d3-4935-bdba-871e710a2bf4?autoplay=false&amp;showinfo=true"" allowfullscreen style=""border:none;""></iframe>",off,,
-2,survey,1800000,This is the start of a new experiment.,off,group_b_session_1.csv,
+item,trial type,max time,text,shuffle 1,survey,timer_style,
+0,instruct,user,"<iframe width=""640"" height=""360"" src=""https://web.microsoftstream.com/embed/video/64816bfc-d1d3-4935-bdba-871e710a2bf4?autoplay=false&amp;showinfo=true"" allowfullscreen style=""border:none;""></iframe>",off,,,
+2,survey,1800,This is the start of a new experiment.,off,group_b_session_1.csv,display:none,

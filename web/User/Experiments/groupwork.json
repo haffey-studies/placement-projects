@@ -1,6 +1,6 @@
 {
   "all_procs": {
-    "procedure_1.csv": "item,trial type,max time,text,shuffle 1,flashcards_sheet,\r\n2,flashcard,user,This is the start of a new experiment.,off,flashcards.csv,"
+    "procedure_1.csv": "item,trial type,max time,text,shuffle 1,flashcards_sheet,timer_style,\r\n0,instruct,,hi,off,,,\r\n0,flashcard,300,This is the start of a new experiment.,off,flashcards.csv,,"
   },
   "conditions": "name,notes,stimuli,procedure,fullscreen,welcome,participant_id,end_message,start_message,buffer,scripts,\r\ncondition_1,You can put more detailed notes in this field,stimuli_1.csv,procedure_1.csv,off,,on,,,5,,",
   "all_stims": {

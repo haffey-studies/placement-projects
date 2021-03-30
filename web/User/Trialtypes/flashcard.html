@@ -7,7 +7,7 @@
     
 ---development---
 [
-  {"text":"your practice text"}
+  {"text":"your practice text"; }
 ]
 ---development---
 
@@ -37,6 +37,11 @@
   max-height:600px;
   text-align: right;
 }
+#flashcard_image{
+  display:none;
+  width: 200px;
+  height:200px
+}
 </style>
 
 <body>
@@ -47,7 +52,12 @@
   <table id="card_table">
     <tr>
       <td id="card_list"></td>
-      <td><div class="flashcard_box" id="box_0"></div></td>
+      <td>
+          <div class="flashcard_box" id="box_0">
+            <div id="flashcard_text"></div>
+            <img id="flashcard_image"/>
+          </div>
+      </td>
     </tr>
     <tr>
       <td> </td>
@@ -68,6 +78,18 @@ if(typeof(parent.parent.exp_json.all_stims[flashcards_sheet]) !== "undefined"){
   var cards_array = parent.parent.Collector.PapaParsed(
     parent.parent.exp_json.all_stims[flashcards_sheet]
   );
+  
+  if(parent.parent.Study.is_exe){
+    var home_dir = parent.parent.Collector
+      .electron
+      .fs
+      .home_dir();
+    cards_array = cards_array.map(function(row){
+      row.image = row.image.replace("../User", home_dir + "/User")
+      return row;
+    });
+  }
+  
 } else {
   
   cards_array = [
@@ -104,16 +126,28 @@ function backFlip() {
   );
   $(".flashcard_box").css("line-height","normal");
   var this_card = cards_array[current_card]["answer"];
-  $(".flashcard_box").html(this_card);
+  //image	image_front	image_back
+
+  /// D:/github/sos/collector-dev/web/User/Stimuli/flashcards/stroop.jpg
+  // ../User/Stimuli/flashcards/synaesthesia.jpg
+
+
+  if(cards_array[current_card].image_back == "yes"){
+    $("#flashcard_image").attr("src", cards_array[current_card].image);
+    $("#flashcard_image").show();
+  } else {
+    $("#flashcard_image").hide();
+  }
+  $("#flashcard_text").html(this_card);
 }
 function hideMe(){
-  $(".flashcard_box").html(" ")
+  $("#flashcard_text").html("")
 }
 function frontFlip(){
   var this_card = cards_array[current_card]["cue"];
   $(".flashcard_box").css("font-size","25px");
   $(".flashcard_box").css("line-height","200px");
-  $(".flashcard_box").html(this_card);
+  $("#flashcard_text").html(this_card);
 }
 
 window.setTimeout(Trial.submit(), 1800000); //1800000ms = 30 mins

@@ -16,20 +16,71 @@ function wait_till_exists(this_function){
 */
 $_GET = window.location.href.substr(1).split("&").reduce((o,i)=>(u=decodeURIComponent,[k,v]=i.split("="),o[u(k)]=v&&u(v),o),{});
 
-Collector.tests.run();                        // display the test dialog before anything else (assuming tests are being run)
-
+Collector.tests.run();
 Collector.start = function(){
-  wait_till_exists("list_studies");
+  wait_till_exists("list_projects");
   wait_till_exists("list_graphics");
-  list_mods();
-  wait_till_exists("list_trialtypes");
+  wait_till_exists("list_code");
   wait_till_exists("initiate_actions");
-  autoload_mods();
   wait_till_exists("list_keys");
   wait_till_exists("list_data_servers");
   wait_till_exists("list_servers");
   wait_till_exists("list_surveys");
   wait_till_exists("list_pathways");
+}
+
+function update_master(){
+  /*
+  * studies --> projects
+  */
+  if(typeof(master_json.project_mgmt) == "undefined"){
+    master_json.project_mgmt = master_json.exp_mgmt;
+    master_json.project_mgmt.project = master_json
+      .project_mgmt
+      .experiment;
+    master_json.project_mgmt.projects = master_json
+      .project_mgmt
+      .experiments;
+    delete(master_json.project_mgmt.experiment);
+    delete(master_json.project_mgmt.experiments);
+  }
+
+  /*
+  * "trial type" --> "code" for each project
+  */
+
+  var projects = Object.keys(master_json.project_mgmt.projects);
+  projects.forEach(function(project){
+    var this_project = master_json.project_mgmt.projects[project];
+    var all_procs = Object.keys(this_project.all_procs);
+    all_procs.forEach(function(this_proc){
+      this_project.all_procs[this_proc] = this_project
+        .all_procs[this_proc].replace("trial type,","code,");
+    });
+  });
+
+  /*
+  * "trialtype" --> code for master_json
+  */
+  if(typeof(master_json.trialtypes) !== "undefined"){
+    master_json.code         = master_json.trialtypes;
+    master_json.code.default = master_json.code.default_trialtypes;
+    master_json.code.file    = master_json.code.file;
+    master_json.code.user    = master_json.code.user_codes;
+    delete(master_json.trialtype);
+    delete(master_json.trialtypes);
+    delete(master_json.code.default_trialtypes);
+    delete(master_json.code.user_codes);
+  }
+  if(typeof(master_json.code.default) == "undefined"){
+    master_json.code.default = {};
+  }
+  if(typeof(master_json.code.user) == "undefined"){
+    master_json.code.user = {};
+  }
+  if(typeof(master_json.code.graphic.files) == "undefined"){
+    master_json.code.graphic.files = master_json.code.graphic.trialtypes;
+  }
 }
 
 switch(Collector.detect_context()){
@@ -59,7 +110,7 @@ switch(Collector.detect_context()){
             bootbox.alert(write_response);
           }
         }
-        
+        update_master();
         Collector.start();
       }
     },100);

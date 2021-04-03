@@ -130,6 +130,7 @@ function load_default_surveys(){
 </nav>
 <div class="tab-content" id="pills-tabContent" style="top:100px; position: absolute;">
   <div class="tab-pane fade show active" id="pills-spreadsheet" role="tabpanel" aria-labelledby="pills-spreadsheet-tab">
+    <br>
     <div id="survey_HoT"></div>
   </div>
   <div class="tab-pane fade" id="pills-preview" role="tabpanel" aria-labelledby="pills-preview-tab">
@@ -167,6 +168,7 @@ function create_survey_HoT(this_survey){
 					callback: function(key, selection, clickEvent) { // Callback for specific option
 						this_sheet = this;
 						$('#cell_editor_div').fadeIn();
+            this_selection = selection;
 
 						cell_editor.setValue(
               this_sheet.getDataAtCell(
